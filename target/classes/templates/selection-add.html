@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Добавление авто</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004d99;
+        }
+    </style>
+</head>
+<body>
+<header th:insert="blocks/head :: head"></header>
+
+<div class="container mt-5">
+    <h1>Добавление авто</h1>
+    <form action="/selection/add" method="post">
+        <div class="form-group">
+            <label for="car-select">Выберите марку</label>
+            <select class="form-control" id="car-select" name="makeCar" onchange="updateModels()">
+                <option value="">Выберите марку</option>
+                <option value="toyota">Toyota</option>
+                <option value="honda">Honda</option>
+                <option value="ford">Ford</option>
+                <option value="volkswagen">Volkswagen</option>
+                <option value="nissan">Nissan</option>
+                <option value="bmw">BMW</option>
+                <option value="mercedes">Mercedes-Benz</option>
+                <option value="audi">Audi</option>
+                <option value="hyundai">Hyundai</option>
+                <option value="kia">Kia</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="model-select">Выберите модель</label>
+            <select class="form-control" id="model-select" name="modelCar">
+                <option value="">Выберите модель</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить в гараж</button>
+    </form>
+</div>
+
+<script>
+    const carModels = {
+        toyota: ['Camry', 'Corolla', 'RAV4', 'Highlander'],
+        honda: ['Civic', 'Accord', 'CR-V', 'Pilot'],
+        ford: ['Mustang', 'F-150', 'Explorer', 'Escape'],
+        volkswagen: ['Golf', 'Jetta', 'Passat', 'Atlas'],
+        nissan: ['Altima', 'Rogue', 'Pathfinder', 'Titan'],
+        bmw: ['3 Series', '5 Series', 'X5', 'X3'],
+        mercedes: ['C-Class', 'E-Class', 'GLC', 'GLE'],
+        audi: ['A4', 'A6', 'Q5', 'Q7'],
+        hyundai: ['Sonata', 'Elantra', 'Santa Fe', 'Tucson'],
+        kia: ['Forte', 'Optima', 'Sorento', 'Sportage']
+    };
+
+    function updateModels() {
+        const carSelect = document.getElementById("car-select");
+        const modelSelect = document.getElementById("model-select");
+        const selectedCar = carSelect.value;
+
+        modelSelect.innerHTML = '<option value="">Выберите модель</option>';
+
+        if (selectedCar) {
+            const models = carModels[selectedCar];
+            models.forEach(model => {
+                const option = document.createElement("option");
+                option.value = model;
+                option.text = model;
+                modelSelect.add(option);
+            });
+        }
+    }
+</script>
+</body>
+</html>
