@@ -23,8 +23,8 @@ public class CarInfoService {
         return carInfoRepository.findByCarId(carId);
     }
 
-    public CarInfo saveCarInfo(CarInfo carInfo) {
-        return carInfoRepository.save(carInfo);
+    public void saveCarInfo(CarInfo carInfo) {
+        carInfoRepository.save(carInfo);
     }
     public CarInfo getCarInfoByCarAndUser(Car car, User user) {
         Optional<CarInfo> optionalCarInfo = carInfoRepository.findByCarAndUser(car, user);

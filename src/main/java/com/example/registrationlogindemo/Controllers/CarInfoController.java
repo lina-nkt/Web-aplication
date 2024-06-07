@@ -3,56 +3,49 @@ package com.example.registrationlogindemo.Controllers;
 import com.example.registrationlogindemo.entity.Car;
 import com.example.registrationlogindemo.entity.CarInfo;
 import com.example.registrationlogindemo.entity.User;
-import com.example.registrationlogindemo.service.CarInfoService;
+import com.example.registrationlogindemo.repository.CarInfoRepository;
 import com.example.registrationlogindemo.service.CarService;
 import com.example.registrationlogindemo.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDate;
 
 
 @RequiredArgsConstructor
 @Controller
+@Slf4j
 public class CarInfoController {
 
     @Autowired
-    private CarInfoService carInfoService;
-
-    @Autowired
+    private final CarInfoRepository carInfoRepository;
+    private UserService userService;
     private CarService carService;
 
-    @Autowired
-    private UserService userService;
-
     @GetMapping("/selection/{car_id}/info")
-    public String showCarInfo(@PathVariable("car_id") Long carId, Model model, Principal principal) {
-        Car car = carService.getCarById(carId);
-        User user = userService.findByEmail(principal.getName());
-        CarInfo carInfo = carInfoService.getCarInfoByCarAndUser(car, user);
-
-        carInfo.setCar(car);
-        carInfo.setUser(user);
-
-        model.addAttribute("car", car);
-        model.addAttribute("carInfo", carInfo);
+    public String carInfo(Model model) {
         return "car-info";
     }
 
     @PostMapping("/selection/{car_id}/info")
-    public String saveAllCarInfo(@PathVariable("car_id") long carId, @ModelAttribute CarInfo carInfo, Principal principal) {
+    public String saveCarInfo(@PathVariable("car_id") long carId, @RequestParam int mileage,
+                              @RequestParam int numOfOwners, @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate lastServiceDate,
+                              Principal principal) {
         User user = userService.findByEmail(principal.getName());
         Car car = carService.getCarById(carId);
 
-        carInfo.setUser(user);
-        carInfo.setCar(car);
-        carInfoService.saveCarInfo(carInfo);
-        return "car-info";
+        CarInfo carInfo = new CarInfo(car, user, mileage, numOfOwners, lastServiceDate);
+
+        log.info("carInfo {}", carInfo);
+
+        carInfoRepository.save(carInfo);
+
+        return "redirect:/selection";
     }
 }

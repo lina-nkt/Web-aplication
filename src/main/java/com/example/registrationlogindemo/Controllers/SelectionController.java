@@ -30,7 +30,6 @@ public class SelectionController {
 
     private final UserService userService;
     private final CarService carService;
-    private final CarInfoService carInfoService;
     private final CarRepository carRepository;
     private final UserRepository userRepository;
     private final CarInfoRepository carInfoRepository;

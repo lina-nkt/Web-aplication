@@ -6,25 +6,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 </head>
 <body>
-<h1>Car Information</h1>
-<header th:insert="blocks/head :: head"></header>
+<header th:replace="~{blocks/head :: head}"></header>
 
-<div>
-    <h2 th:text="${car.makeCar + ' ' + car.modelCar}"></h2>
-    <p>Mileage: <input type="number" th:field="*{carInfo.mileage}"></p>
-    <p>Number of Owners: <input type="number" th:field="*{carInfo.numberOfOwners}"></p>
-    <p>Last Service Date: <input type="date" th:field="*{carInfo.lastServiceDate}"></p>
-    <button type="submit">Save</button>
+<div class = "container mt-5 mb-5">
+    <h1>Дополнительная информация</h1>
+    <form action="@{/selection/{car_id}/info(car_id=${car.id})}" method="post">
+        <input type="number" name="mileage" placeholder="Введите сколько накопилось км" class="form-control"><br>
+        <input type="text" name="numOfOwners" placeholder="Введите кол-во владельцев" class="form-control"><br>
+        <input type="date" name="lastServiceDate" placeholder="Введите дату последнего ТО" class="form-control"><br>
+        <button type="submit" class="btn btn-success">Сохранить</button>
+    </form>
 </div>
-
-<form th:action="@{/selection/{carId}/car-info(carId=${car.id})}" th:object="${carInfo}" method="post">
-    <input type="hidden" th:field="*{id}">
-    <input type="hidden" th:field="*{car.id}">
-    <input type="hidden" th:field="*{user.id}">
-    <div th:replace="fragments/input :: input ('Mileage', 'mileage', 'number')"></div>
-    <div th:replace="fragments/input :: input ('Number of Owners', 'numberOfOwners', 'number')"></div>
-    <div th:replace="fragments/input :: input ('Last Service Date', 'lastServiceDate', 'date')"></div>
-    <button type="submit">Save</button>
-</form>
 </body>
 </html>
