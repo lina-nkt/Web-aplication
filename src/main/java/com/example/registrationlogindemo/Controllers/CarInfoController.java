@@ -25,8 +25,8 @@ public class CarInfoController {
 
     @Autowired
     private final CarInfoRepository carInfoRepository;
-    private UserService userService;
-    private CarService carService;
+    private final UserService userService;
+    private final CarService carService;
 
     @GetMapping("/selection/{car_id}/info")
     public String carInfo(Model model) {
@@ -41,8 +41,6 @@ public class CarInfoController {
         Car car = carService.getCarById(carId);
 
         CarInfo carInfo = new CarInfo(car, user, mileage, numOfOwners, lastServiceDate);
-
-        log.info("carInfo {}", carInfo);
 
         carInfoRepository.save(carInfo);
 

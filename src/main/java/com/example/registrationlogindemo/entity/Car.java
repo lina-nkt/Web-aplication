@@ -22,6 +22,9 @@ public class Car {
     @OneToMany
     public List<Parts> carParts;
 
+    @ManyToMany
+    public List<CarInfo> carsInfo;
+
     public Car(String makeCar, String modelCar) {
         this.makeCar = makeCar;
         this.modelCar = modelCar;

@@ -40,28 +40,12 @@ public class User
             inverseJoinColumns={@JoinColumn(name="CAR_ID", referencedColumnName="ID")})
     private List<Car> cars = new ArrayList<>();
 
-    public List<Car> getCars() {
-        return cars;
-    }
+    @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    private List<CarInfo> carsInfo = new ArrayList<>();
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public void setId(Long id) {
