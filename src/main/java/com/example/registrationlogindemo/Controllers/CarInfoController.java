@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -40,8 +41,23 @@ public class CarInfoController {
         User user = userService.findByEmail(principal.getName());
         Car car = carService.getCarById(carId);
 
-        CarInfo carInfo = new CarInfo(car, user, mileage, numOfOwners, lastServiceDate);
+        Optional<CarInfo> existingCarInfo = user.getCarsInfo().stream()
+                .filter(info -> info.getCar().getId() == carId)
+                .findFirst();
 
+        CarInfo carInfo;
+        if (existingCarInfo.isPresent()) {
+            carInfo = existingCarInfo.get();
+            user.getCarsInfo().remove(carInfo);
+            carInfo.setMileage(mileage);
+            carInfo.setNumberOfOwners(numOfOwners);
+            carInfo.setLastServiceDate(lastServiceDate);
+            user.getCarsInfo().add(carInfo);
+
+        } else {
+            carInfo = new CarInfo(car, user, mileage, numOfOwners, lastServiceDate);
+            user.getCarsInfo().add(carInfo);
+        }
         carInfoRepository.save(carInfo);
 
         return "redirect:/selection";

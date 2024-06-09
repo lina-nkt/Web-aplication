@@ -23,6 +23,10 @@ public class Car {
     public List<Parts> carParts;
 
     @ManyToMany
+    @JoinTable(
+            name="car_cars_info",
+            joinColumns={@JoinColumn(name="CAR_ID", referencedColumnName="ID")},
+            inverseJoinColumns={@JoinColumn(name="CARS_INFO_ID", referencedColumnName="ID")})
     public List<CarInfo> carsInfo;
 
     public Car(String makeCar, String modelCar) {

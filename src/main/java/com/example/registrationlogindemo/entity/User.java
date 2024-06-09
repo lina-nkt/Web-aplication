@@ -41,6 +41,10 @@ public class User
     private List<Car> cars = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @JoinTable(
+            name="users_cars_info",
+            joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="ID")},
+            inverseJoinColumns={@JoinColumn(name="CARS_INFO_ID", referencedColumnName="ID")})
     private List<CarInfo> carsInfo = new ArrayList<>();
 
 

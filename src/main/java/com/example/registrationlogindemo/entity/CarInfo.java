@@ -27,7 +27,11 @@ public class CarInfo {
 
         @Column(nullable=false)
         private int mileage;
+
+        @Column(nullable=false)
         private int numberOfOwners;
+
+        @Column(nullable=false)
         private LocalDate lastServiceDate;
 
         public CarInfo(Car car, User user, int mileage, int numberOfOwners, LocalDate lastServiceDate) {

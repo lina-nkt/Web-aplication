@@ -19,9 +19,7 @@ import com.example.registrationlogindemo.service.UserService;
 
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Controller
@@ -42,11 +40,17 @@ public class SelectionController {
         User user = userService.findByEmail(email);
         List<Car> userCars = user.getCars();
 
-        log.info("user cars {}", userCars);
-
         model.addAttribute("email", user.getEmail());
         model.addAttribute("name", user.getName());
         model.addAttribute("cars", userCars);
+
+        Map<Long, List<CarInfo>> carInfo = new HashMap<>();
+        for (Car car : userCars) {
+            List<CarInfo> carInfoList = user.getCarsInfo().stream()
+                    .filter(carInfo1 -> carInfo1.getCar().equals(car)).toList();
+            carInfo.put(car.getId(), carInfoList);
+        }
+        model.addAttribute("carInfo", carInfo);
 
         return "selection";
     }
