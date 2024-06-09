@@ -44,8 +44,22 @@
                             <span th:text="${part.name}"></span></span>
                         </li>
                     </ul>
+                    <p>Additional Information:</p>
+                    <ul>
+                        <div th:if="${carInfo != null}">
+                            <div th:each="entry : ${carInfo}" th:if="${entry.key == car.id}">
+                                <ul>
+                                    <li th:each="carInfo : ${entry.value}">
+                                        <span th:text="|Mileage: ${carInfo.mileage}|"></span>
+                                        <span th:text="|Number of Owners: ${carInfo.numberOfOwners}|"></span>
+                                        <span th:text="|Last Service Date: ${#temporals.format(carInfo.lastServiceDate, 'yyyy-MM-dd')}|"></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </ul>
                     <form th:action="@{/selection/{car_id}/info(car_id=${car.id})}" method="get">
-                        <button type="submit" class="btn btn-success">Доп информация</button>
+                        <button type="submit" class="btn btn-success">Edit</button>
                     </form>
                     <br>
                     <form th:action="@{/selection/{car_id}/deleteCar(car_id=${car.id})}" method="post">
