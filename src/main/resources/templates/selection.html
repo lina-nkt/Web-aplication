@@ -53,6 +53,11 @@
                                         <span th:text="|Mileage: ${carInfo.mileage}|"></span>
                                         <span th:text="|Number of Owners: ${carInfo.numberOfOwners}|"></span>
                                         <span th:text="|Last Service Date: ${#temporals.format(carInfo.lastServiceDate, 'yyyy-MM-dd')}|"></span>
+                                        <div th:with="daysSinceLastService=${T(java.time.temporal.ChronoUnit).DAYS.between(carInfo.lastServiceDate, #temporals.createNow())}">
+                                            <div th:if="${daysSinceLastService > 180}" th:style="'color: red;'">
+                                                <p>Внимание! Необходим технический осмотр автомобиля.</p>
+                                            </div>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
